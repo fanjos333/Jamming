@@ -8,7 +8,7 @@ const apiUrl = 'https://api.spotify.com/v1/';
 const Spotify={
   getAccessToken(){
     const urlAccessToken=window.location.href.match(/access_token=([^&]*)/);
-    const expirationTime=window.locations.href.match(/expires_in=([^&]*)/);
+    const expirationTime=window.location.href.match(/expires_in=([^&]*)/);
 console.log(urlAccessToken);
     if(accessToken){
       return accessToken;
@@ -26,7 +26,7 @@ console.log(urlAccessToken);
     }
   },
   search(searchTerm){
-    return fetch(`https://api.spotify.com/v1/search?type=track&q=${searchTerm}`,{
+    return fetch(`${apiUrl}search?type=track&q=${searchTerm}`,{
       method:"GET",
       headers:{
           Authorization: `Bearer ${accessToken}`
