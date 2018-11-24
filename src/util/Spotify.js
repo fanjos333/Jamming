@@ -15,9 +15,9 @@ const Spotify={
     }
     else if(!accessToken && urlAccessToken){
       accessToken = urlAccessToken[1];
-        let expiresIn = expirationTime[1];
-            window.setTimeout(() => accessToken = '', expiresIn * 1000);
-            window.history.pushState('Access Token', null, '/');
+      let expiresIn = expirationTime[1];
+      window.setTimeout(() => accessToken = '', expiresIn * 1000);
+      window.history.pushState('Access Token', null, '/');
       return accessToken;
     }
     else{
@@ -30,11 +30,11 @@ const Spotify={
     return fetch(`${apiUrl}search?type=track&q=${searchTerm}`,{
       method:"GET",
       headers:{
-          Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`
       }
     }).then((response) => {
-        return response.json();
-      }).then((jsonResponse)=>{
+      return response.json();
+    }).then((jsonResponse)=>{
       if(jsonResponse.tracks){
         return jsonResponse.tracks.items.map((track)=>{
           return {
@@ -59,47 +59,48 @@ const Spotify={
     if(!playlistName && !trackURIs){
       return;
     }
-      else{
-        let endPoint=`${apiUrl}me`
-        return fetch(endPoint,{
-          headers:{
-                    method:"GET",
-                    headers:{
-                    Authorization: `Bearer ${accessToken}`
-                    }
-                }
+    else{
+      let endPoint=`${apiUrl}me`
+      return fetch(endPoint,{
+        method:"GET",
+        headers:{
+          Authorization: `Bearer ${accessToken}`
+        }
+
+      }).then((response)=>{
+        return response.json();
+      }).then((jsonResponse)=>{
+        userId=jsonResponse.id;
+        endPoint=`${apiUrl}users/${userId}/playlists`
+        return fetch(endPoint, {
+          method:"POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({
+            name:playlistName
+          })
         }).then((response)=>{
           return response.json();
         }).then((jsonResponse)=>{
-          userId=jsonResponse.id;
-          endPoint=`${apiUrl}users/${userId}/playlists`
+          if(jsonResponse.id){
+            playlistId = jsonResponse.id;
+            endPoint=`${apiUrl}users/${userId}/playlists/${playlistId}/tracks`;
             return fetch(endPoint, {
               method:"POST",
               headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    },
-              body: JSON.stringify({
-                name:playlistName
-              })
-            }).then((response)=>{
-              return response.json();
-            }).then((jsonResponse)=>{
-              playlistId = jsonResponse.id;
-              endPoint=`${apiUrl}/v1/users/${userId}/playlists/${playlistId}/tracks`
-              return fetch(endPoint, {
-                method:"POST",
-                headers: {
-                  Authorization: `Bearer ${accessToken}`
-                },
-                body: JSON.stringify(
-                  {
-                    uris: trackURIs
-                  }
-                )
-              })
+                Authorization: `Bearer ${accessToken}`
+              },
+              body: JSON.stringify(
+                {
+                  uris: trackURIs
+                }
+              )
             })
+          }
         })
-      }
+      })
+    }
 
   }
 }
