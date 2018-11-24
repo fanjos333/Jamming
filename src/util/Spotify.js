@@ -9,7 +9,7 @@ const Spotify={
   getAccessToken(){
     const urlAccessToken=window.location.href.match(/access_token=([^&]*)/);
     const expirationTime=window.location.href.match(/expires_in=([^&]*)/);
-console.log(urlAccessToken);
+
     if(accessToken){
       return accessToken;
     }
@@ -26,6 +26,7 @@ console.log(urlAccessToken);
     }
   },
   search(searchTerm){
+    const accessToken = Spotify.getAccessToken();
     return fetch(`${apiUrl}search?type=track&q=${searchTerm}`,{
       method:"GET",
       headers:{
@@ -42,11 +43,11 @@ console.log(urlAccessToken);
             artist:track.artists[0].name,
             album:track.album.name,
             uri:track.uri
-          }
+          };
         });
       }
       else{
-        return
+        return [];
       }
     })
   },
@@ -62,7 +63,10 @@ console.log(urlAccessToken);
         let endPoint=`${apiUrl}me`
         return fetch(endPoint,{
           headers:{
+                    method:"GET",
+                    headers:{
                     Authorization: `Bearer ${accessToken}`
+                    }
                 }
         }).then((response)=>{
           return response.json();

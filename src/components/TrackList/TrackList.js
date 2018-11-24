@@ -5,13 +5,13 @@ import Track from '../Track/Track.js';
 class TrackList extends React.Component{
 
   render() {
-    const tracks = this.props.tracks !== undefined ? this.props.tracks : [];
+    //const tracks = this.props.tracks !== undefined ? this.props.tracks : [];
     return(
       <div className="TrackList">
       {
-        tracks.map((value) => {
+        this.props.tracks.map((track) => {
           return (
-            <Track key={value.id} track={value} onAdd={this.props.onAdd} onRemove={this.props.onRemove}
+            <Track key={track.id} track={track} onAdd={this.props.onAdd} onRemove={this.props.onRemove}
             isRemoval={this.props.isRemoval}/>
           )
         })
