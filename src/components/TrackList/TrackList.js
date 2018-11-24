@@ -5,7 +5,7 @@ import Track from '../Track/Track.js';
 class TrackList extends React.Component{
 
   render() {
-    const tracks = this.props.tracks != undefined ? this.props.tracks : [];
+    const tracks = this.props.tracks !== undefined ? this.props.tracks : [];
     return(
       <div className="TrackList">
       {
