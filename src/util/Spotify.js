@@ -1,7 +1,8 @@
 let accessToken;
 
 const client_id = '2edc50ff19064f3993df01afc5f3bcad';
-const redirect_uri = 'http://localhost:3000/';
+const redirect_uri = 'https://fanjos_jammming.surge.sh';
+//const redirect_uri = 'http://localhost:3000/';
 const apiUrl = 'https://api.spotify.com/v1/';
 
 
