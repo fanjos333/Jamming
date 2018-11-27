@@ -67,14 +67,16 @@ class App extends React.Component {
             <div className="App">
               <SearchBar onSearch={this.search}/>
                 <div className="App-playlist">
-                    <SearchResults searchResults = {this.state.searchResults}
-                                   onAdd={this.addTrack}
+                    <SearchResults
+                      onAdd={this.addTrack}
+                      searchResults = {this.state.searchResults}               
                     />
-                        <PlayList playlistName={this.state.playlistName}
-                                  playlistTracks={this.state.playlistTracks}
-                                  onRemove={this.removeTrack}
-                                  onNameChange={this.updatePlayList}
-                                  onSave={this.savePlaylist}
+                        <PlayList
+                          playlistName={this.state.playlistName}
+                          playlistTracks={this.state.playlistTracks}
+                          onRemove={this.removeTrack}
+                          onNameChange={this.updatePlayList}
+                          onSave={this.savePlaylist}
                         />
                   </div>
                 </div>
