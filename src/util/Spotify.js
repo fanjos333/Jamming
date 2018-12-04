@@ -1,8 +1,11 @@
+import swal from 'sweetalert';
+
+
 let accessToken;
 
 const client_id = '2edc50ff19064f3993df01afc5f3bcad';
-const redirect_uri = 'https://fanjos_jammming.surge.sh';
-//const redirect_uri = 'http://localhost:3000/';
+//const redirect_uri = 'https://fanjos_jammming.surge.sh';
+const redirect_uri = 'http://localhost:3000/';
 const apiUrl = 'https://api.spotify.com/v1/';
 
 
@@ -53,6 +56,7 @@ const Spotify={
     const accessToken = Spotify.getAccessToken();
     let userId;
     let playlistId;
+    let playlistInput = playlistName;
 
     if(!playlistName && !trackURIs){
       return;
@@ -94,15 +98,31 @@ const Spotify={
                   uris: trackURIs
                 }
               )
-            })
+            }).then((response) => {
+              if (response.status === 201) {
+                swal("Success",`Your new playlist "${playlistInput}" has been created!`, "success");
+              }
+              else if (response.status === 401) {
+                swal("Attention", "This request requires authentication", "warning");
+              }
+              else if (response.status === 503){
+                swal("The service is currently unavailable.","Please try again later.","error");
+                }
+                else {
+                  swal("Your Playlist has not been created!","Test your connection and try again.", "error");
+                }
+                return response.json();
+              }).then((jsonResponse) => {
+                if (jsonResponse.snapshot_id) {
+                  playlistId = jsonResponse.snapshot_id;
+              }
+            });
           }
-        })
-      })
+        });
+      });
     }
-
   }
-}
-
+};
 
 
 export default Spotify
